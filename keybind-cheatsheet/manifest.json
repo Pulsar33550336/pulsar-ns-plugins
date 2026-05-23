@@ -1,0 +1,62 @@
+{
+  "id": "keybind-cheatsheet",
+  "name": "Keybind Cheatsheet",
+  "version": "1.0.0",
+  "minNoctaliaVersion": "3.6.0",
+  "author": "Pulsar",
+  "license": "MIT",
+  "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+  "description": "Hyprland keybind cheatsheet that displays keybindings from hyprctl binds -j with description tag support.",
+  "tags": [
+    "Bar",
+    "Panel",
+    "System",
+    "Indicator",
+    "Hyprland"
+  ],
+  "entryPoints": {
+    "main": "Main.qml",
+    "barWidget": "BarWidget.qml",
+    "panel": "Panel.qml",
+    "settings": "Settings.qml"
+  },
+  "dependencies": {
+    "plugins": []
+  },
+  "metadata": {
+    "defaultSettings": {
+      "cheatsheetData": [],
+      "detectedCompositor": "",
+      "windowWidth": 1400,
+      "windowHeight": 850,
+      "autoHeight": true,
+      "columnCount": 3,
+      "showUndescribedBinds": true,
+      "keyColorAlt": "#FF6B6B",
+      "keyColorXF86": "#4ECDC4",
+      "keyColorPrint": "#95E1D3",
+      "keyColorNumeric": "#A8DADC",
+      "keyColorMouse": "#F38181",
+      "keyColorSuper": "",
+      "keyColorCtrl": "",
+      "keyColorShift": "",
+      "keyColorDefault": "#6C757D",
+      "keyLabelColor": "#FFFFFF",
+      "keyTextSuper": "",
+      "keyTextCtrl": "",
+      "keyTextShift": "",
+      "keyTextAlt": "",
+      "keyTextXF86": "",
+      "keyTextPrint": "",
+      "keyTextNumeric": "",
+      "keyTextMouse": "",
+      "keyTextDefault": "",
+      "descriptionTextColor": "#E0E0E0",
+      "useMacSymbol": false,
+      "useFnSymbol": false,
+      "useMouseSymbol": false,
+      "superKeyText": "",
+      "splitButtons": true
+    }
+  }
+}

@@ -2,13 +2,32 @@
   "version": 1,
   "plugins": [
     {
+      "id": "keybind-cheatsheet",
+      "name": "Keybind Cheatsheet",
+      "version": "1.0.0",
+      "official": false,
+      "author": "Pulsar",
+      "description": "Hyprland keybind cheatsheet that displays keybindings from hyprctl binds -j with description tag support.",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+      "minNoctaliaVersion": "3.6.0",
+      "license": "MIT",
+      "tags": [
+        "Bar",
+        "Panel",
+        "System",
+        "Indicator",
+        "Hyprland"
+      ],
+      "lastUpdated": "2026-03-02T10:35:39+08:00"
+    },
+    {
       "id": "screen-shot-and-record",
       "name": "ScreenShot & Record",
       "version": "1.0.0",
       "official": false,
       "author": "Pulsar",
       "description": "A screenshot plugin with OCR, Google Lens integration, and screen recording",
-      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+      "repository": "https://github.com/Pulsar33550336/pulsar-ns-plugins",
       "minNoctaliaVersion": "3.6.0",
       "license": "GPL-3.0-or-later",
       "tags": [
@@ -16,7 +35,7 @@
         "Panel",
         "Utility"
       ],
-      "lastUpdated": "2026-02-27T17:10:17+08:00"
+      "lastUpdated": "2026-03-02T10:37:55+08:00"
     }
   ]
 }
