@@ -58,6 +58,58 @@ bindd = Super, J, [Launcher/Shell 8] Toggle bar, exec, $ipc bar toggle
 - `description` — the text shown next to the keybinding
 - `[hidden]` — hides the bind from the cheatsheet
 
+## Dummy Keybinds (`~/.cache/hypr_dummy.json`)
+
+In addition to live keybinds from `hyprctl`, you can define fake/dummy keybinds in
+`~/.cache/hypr_dummy.json`. These are merged into the cheatsheet alongside real binds.
+The file is silently skipped if it does not exist or contains invalid JSON.
+
+### Format
+
+```json
+[
+  {"key": "F1", "des": "[System 1] Open terminal"},
+  {"key": "F2", "des": "[System 2] Open browser"},
+  {"key": "F3", "des": "[System 3] Launch file manager"}
+]
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `key` | yes | Key name (same as hyprctl key names, e.g. `F1`, `Print`, `Super_L`) |
+| `des` | no | Description with `[Category N]` tag |
+| `modmask` | no | Modifier bitmask (64 = Super, 1 = Shift, 4 = Ctrl, 8 = Alt). Defaults to 0. |
+
+### Example: Lua generator (Hyprland Lua config)
+
+Since Hyprland's Lua config has no JSON library, build the string manually:
+
+```lua
+function gen_cheatsheet_dummies()
+  local entries = {
+    { key = "F1",  des = "[System 1] Open terminal" },
+    { key = "F2",  des = "[System 2] Open browser" },
+    { key = "F3",  des = "[System 3] Launch file manager" },
+  }
+  local parts = {}
+  for i, e in ipairs(entries) do
+    -- escape backslash and double-quote for JSON safety
+    local key = e.key:gsub('[\\"]', {['\\'] = '\\\\', ['"'] = '\\"'})
+    local des = e.des:gsub('[\\"]', {['\\'] = '\\\\', ['"'] = '\\"'})
+    parts[i] = '{"key":"'..key..'","des":"'..des..'"}'
+  end
+  local json = "[" .. table.concat(parts, ",") .. "]\n"
+  local f = io.open(os.getenv("HOME") .. "/.cache/hypr_dummy.json", "w")
+  if f then f:write(json); f:close() end
+end
+
+-- Call in your config after all binds are defined:
+gen_cheatsheet_dummies()
+```
+
+After writing the file, call `qs -c noctalia-shell ipc call plugin:keybind-cheatsheet refresh`
+(or reopen the panel) to see the dummy entries.
+
 ## Special Key Formatting
 
 | Raw Key | Display |

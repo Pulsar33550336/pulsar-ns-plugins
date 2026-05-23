@@ -58,6 +58,57 @@ bindd = Super, J, [启动器/Shell 8] 切换顶栏, exec, $ipc bar toggle
 - `描述` — 显示在快捷键旁边的文字
 - `[hidden]` — 从速查表中隐藏该绑定
 
+## 虚拟快捷键 (`~/.cache/hypr_dummy.json`)
+
+除了 `hyprctl` 的实时快捷键，你还可以在 `~/.cache/hypr_dummy.json` 中定义虚拟快捷键。
+它们会与真实快捷键合并显示。如果文件不存在或 JSON 格式无效，会被静默忽略。
+
+### 格式
+
+```json
+[
+  {"key": "F1", "des": "[系统 1] 打开终端"},
+  {"key": "F2", "des": "[系统 2] 打开浏览器"},
+  {"key": "F3", "des": "[系统 3] 打开文件管理器"}
+]
+```
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `key` | 是 | 键名（与 hyprctl 键名一致，如 `F1`、`Print`、`Super_L`） |
+| `des` | 否 | 带有 `[分类 N]` 标签的描述文字 |
+| `modmask` | 否 | 修饰键位掩码（64 = Super, 1 = Shift, 4 = Ctrl, 8 = Alt），默认为 0 |
+
+### 示例：Lua 生成函数（Hyprland Lua 配置）
+
+Hyprland 的 Lua 配置没有 JSON 库，需要手动拼接字符串：
+
+```lua
+function gen_cheatsheet_dummies()
+  local entries = {
+    { key = "F1",  des = "[系统 1] 打开终端" },
+    { key = "F2",  des = "[系统 2] 打开浏览器" },
+    { key = "F3",  des = "[系统 3] 打开文件管理器" },
+  }
+  local parts = {}
+  for i, e in ipairs(entries) do
+    -- 转义反斜杠和双引号
+    local key = e.key:gsub('[\\"]', {['\\'] = '\\\\', ['"'] = '\\"'})
+    local des = e.des:gsub('[\\"]', {['\\'] = '\\\\', ['"'] = '\\"'})
+    parts[i] = '{"key":"'..key..'","des":"'..des..'"}'
+  end
+  local json = "[" .. table.concat(parts, ",") .. "]\n"
+  local f = io.open(os.getenv("HOME") .. "/.cache/hypr_dummy.json", "w")
+  if f then f:write(json); f:close() end
+end
+
+-- 在配置中绑定定义完成后调用：
+gen_cheatsheet_dummies()
+```
+
+写入文件后，执行 `qs -c noctalia-shell ipc call plugin:keybind-cheatsheet refresh`
+（或重新打开面板）即可看到虚拟快捷键。
+
 ## 特殊键名格式
 
 | 原始键名 | 显示 |

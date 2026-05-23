@@ -26,6 +26,7 @@ Item {
 
   Component.onDestruction: {
     if (hyprctlBindsProcess.running) hyprctlBindsProcess.running = false;
+    if (dummyFileProcess.running) dummyFileProcess.running = false;
   }
 
   function checkAndParse() {
@@ -48,6 +49,8 @@ Item {
   // ── Parser: hyprctl binds -j ──
 
   property var hyprctlChunks: []
+  property var _pendingHyprctlBinds: []
+  property var dummyChunks: []
 
   function runParser() {
     hyprctlChunks = [];
@@ -83,8 +86,54 @@ Item {
         binds = [];
       }
       root.hyprctlChunks = [];
-      root.buildCategories(binds);
+      root._pendingHyprctlBinds = binds;
+      root.dummyChunks = [];
+      dummyFileProcess.command = ["/bin/sh", "-c", "cat ~/.cache/hypr_dummy.json 2>/dev/null || true"];
+      dummyFileProcess.running = true;
     }
+  }
+
+  // ── Dummy / fake keybinds from ~/.cache/hypr_dummy.json ──
+
+  Process {
+    id: dummyFileProcess
+    running: false
+
+    stdout: SplitParser {
+      onRead: data => {
+        if (root.dummyChunks.length < 20000) root.dummyChunks.push(data);
+      }
+    }
+
+    onExited: (exitCode, exitStatus) => {
+      var dummyBinds = [];
+      if (exitCode === 0 && root.dummyChunks.length > 0) {
+        try {
+          dummyBinds = JSON.parse(root.dummyChunks.join("\n"));
+        } catch (e) {
+          Logger.w("keybind-cheatsheet", "dummy JSON parse failed: " + e);
+        }
+      }
+      root.dummyChunks = [];
+      root.mergeAndBuild(dummyBinds);
+    }
+  }
+
+  function mergeAndBuild(dummyBinds) {
+    var merged = root._pendingHyprctlBinds.slice();
+    if (dummyBinds && Array.isArray(dummyBinds)) {
+      for (var i = 0; i < dummyBinds.length; i++) {
+        var d = dummyBinds[i];
+        if (!d || d.key === undefined || d.key === null) continue;
+        merged.push({
+          key: String(d.key),
+          modmask: Number(d.modmask) || 0,
+          has_description: true,
+          description: String(d.des || d.desc || d.description || "")
+        });
+      }
+    }
+    root.buildCategories(merged);
   }
 
   // ── Description tags ──

@@ -4,7 +4,7 @@
     {
       "id": "keybind-cheatsheet",
       "name": "Keybind Cheatsheet",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "official": false,
       "author": "Pulsar",
       "description": "Hyprland keybind cheatsheet that displays keybindings from hyprctl binds -j with description tag support.",
