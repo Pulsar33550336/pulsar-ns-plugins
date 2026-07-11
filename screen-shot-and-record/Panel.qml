@@ -70,7 +70,7 @@ Item {
               }
 
               NText {
-                  text: pluginApi?.tr("panel.title") || "Screenshot"
+                  text: pluginApi?.tr("panel.title")
                   pointSize: Style.fontSizeL
                   font.weight: Style.fontWeightBold
                   color: Color.mOnSurface
@@ -86,7 +86,7 @@ Item {
 
               NButton {
                   icon: "screenshot"
-                  text: pluginApi?.tr("panel.target.screenshot") || "Screenshot"
+                  text: pluginApi?.tr("panel.target.screenshot")
                   backgroundColor: Color.mPrimary
                   textColor: Color.mOnPrimary
                   Layout.fillWidth: true
@@ -97,7 +97,7 @@ Item {
               }
               NButton {
                   icon: "text-recognition"
-                  text: pluginApi?.tr("panel.target.ocr") || "OCR"
+                  text: pluginApi?.tr("panel.target.ocr")
                   backgroundColor: Color.mPrimary
                   textColor: Color.mOnPrimary
                   Layout.fillWidth: true
@@ -108,7 +108,7 @@ Item {
               }
               NButton {
                   icon: "photo-search"
-                  text: pluginApi?.tr("panel.target.search") || "Image Search"
+                  text: pluginApi?.tr("panel.target.search")
                   backgroundColor: Color.mPrimary
                   textColor: Color.mOnPrimary
                   Layout.fillWidth: true
@@ -119,7 +119,7 @@ Item {
               }
               NButton {
                   icon: "camera"
-                  text: pluginApi?.tr("panel.target.record") || "Screen Recording"
+                  text: pluginApi?.tr("panel.target.record")
                   backgroundColor: Color.mPrimary
                   textColor: Color.mOnPrimary
                   Layout.fillWidth: true
@@ -131,7 +131,7 @@ Item {
               }
               NButton {
                   icon: "camera-spark"
-                  text: pluginApi?.tr("panel.target.recordsound") || "Screen Recording (with Audio)"
+                  text: pluginApi?.tr("panel.target.recordsound")
                   backgroundColor: Color.mPrimary
                   textColor: Color.mOnPrimary
                   Layout.fillWidth: true
@@ -143,13 +143,13 @@ Item {
               }
               NButton {
                   icon: "close"
-                  text: pluginApi?.tr("panel.target.stop") || "Stop Recording"
+                  text: pluginApi?.tr("panel.target.stop")
                   backgroundColor: Color.mError
                   textColor: Color.mOnError
                   Layout.fillWidth: true
                   visible: root.recording
                   onClicked: {
-                      mainInstance?.open("record")
+                      mainInstance?.stopRecording()
                       pluginApi.closePanel(pluginApi.panelOpenScreen)
                   }
               }
