@@ -23,19 +23,22 @@
     {
       "id": "screen-shot-and-record",
       "name": "ScreenShot & Record",
-      "version": "1.0.0",
+      "version": "1.0.6",
       "official": false,
       "author": "Pulsar",
-      "description": "A screenshot plugin with OCR, Google Lens integration, and screen recording",
-      "repository": "https://github.com/Pulsar33550336/pulsar-ns-plugins",
+      "description": "A screenshot plugin with OCR, Google Lens integration, and screen recording. Supports Niri, Hyprland, Sway and MangoWM.",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
       "minNoctaliaVersion": "3.6.0",
       "license": "GPL-3.0-or-later",
       "tags": [
         "Bar",
         "Panel",
-        "Utility"
+        "Utility",
+        "Niri",
+        "Hyprland",
+        "Sway"
       ],
-      "lastUpdated": "2026-03-02T10:37:55+08:00"
+      "lastUpdated": "2026-07-11T16:58:12+08:00"
     }
   ]
 }
