@@ -37,6 +37,10 @@
             "label": "Carpeta de guardado de grabaciones",
             "description": "Carpeta donde se guardan las grabaciones de pantalla."
         },
+        "pngCompressionLevel": {
+            "label": "Nivel de compresion PNG",
+            "description": "Nivel de compresión PNG (0=sin comprimir, 1=predeterminado, 9=máximo). Valores altos ralentizan la captura pero reducen el tamaño; valores bajos aumentan el tamaño PNG y pueden impedir copiar al portapapeles."
+        },
         "notificationsEnabled": {
             "label": "Activar notificaciones",
             "description": "Mostrar notificaciones de éxito para capturas, OCR y grabación. Las alertas de dependencias faltantes siempre se muestran."

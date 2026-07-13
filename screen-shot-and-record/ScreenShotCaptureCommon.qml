@@ -83,12 +83,16 @@ QtObject {
 
         const scriptPath = pluginApi.pluginDir + "/capture.sh"
 
+        const pngCompressionLevel = pluginApi?.pluginSettings?.pngCompressionLevel
+                                    ?? pluginApi?.manifest?.metadata?.defaultSettings?.pngCompressionLevel
+                                    ?? 1
+
         const notificationsEnabled = pluginApi?.pluginSettings?.notificationsEnabled
-                                    ?? pluginApi?.manifest?.metadata?.defaultSettings?.notificationsEnabled
-                                    ?? true
+                                     ?? pluginApi?.manifest?.metadata?.defaultSettings?.notificationsEnabled
+                                     ?? true
 
         if (host.target === "screenshot") {
-            const args = ["bash", scriptPath, "--action", "screenshot", "--geometry", geometry, "--crop-geometry", cropGeometry]
+            const args = ["bash", scriptPath, "--action", "screenshot", "--geometry", geometry, "--crop-geometry", cropGeometry, "--png-compression-level", String(pngCompressionLevel)]
 
             if (useFrozenSource) {
                 args.push("--frozen-source", frozenSourceFile)
@@ -123,7 +127,7 @@ QtObject {
             Quickshell.execDetached(args)
 
         } else if (host.target === "search") {
-            const args = ["bash", scriptPath, "--action", "search", "--geometry", geometry, "--crop-geometry", cropGeometry]
+            const args = ["bash", scriptPath, "--action", "search", "--geometry", geometry, "--crop-geometry", cropGeometry, "--png-compression-level", String(pngCompressionLevel)]
 
             if (useFrozenSource) {
                 args.push("--frozen-source", frozenSourceFile)
@@ -132,7 +136,7 @@ QtObject {
             Quickshell.execDetached(args)
 
         } else if (host.target === "ocr") {
-            const args = ["bash", scriptPath, "--action", "ocr", "--geometry", geometry, "--crop-geometry", cropGeometry]
+            const args = ["bash", scriptPath, "--action", "ocr", "--geometry", geometry, "--crop-geometry", cropGeometry, "--png-compression-level", String(pngCompressionLevel)]
 
             if (useFrozenSource) {
                 args.push("--frozen-source", frozenSourceFile)

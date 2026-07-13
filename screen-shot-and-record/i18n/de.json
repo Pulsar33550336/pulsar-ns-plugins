@@ -37,6 +37,10 @@
       "label": "Speicherordner für Aufnahmen",
       "description": "Ordner, in dem Bildschirmaufnahmen gespeichert werden."
     },
+    "pngCompressionLevel": {
+      "label": "PNG-Komprimierungsstufe",
+      "description": "PNG-Komprimierungsstufe (0=unkomprimiert, 1=Standard, 9=maximal). Höhere Werte verlangsamen Screenshots, erzeugen aber kleinere Dateien; niedrigere Werte vergrößern die PNG-Datei und können das Kopieren verhindern."
+    },
     "notificationsEnabled": {
       "label": "Benachrichtigungen aktivieren",
       "description": "Erfolgsbenachrichtigungen für Screenshots, OCR und Aufnahmen anzeigen. Fehlende Abhängigkeiten werden immer gemeldet."

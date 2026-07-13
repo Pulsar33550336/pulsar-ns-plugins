@@ -20,6 +20,7 @@ OUTPUT_FILE=""
 SOURCE_FILE=""
 KEEP_SOURCE=false
 FROZEN_SOURCE=""
+PNG_COMPRESSION_LEVEL=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -42,6 +43,7 @@ while [[ $# -gt 0 ]]; do
         --ocr-empty-body) OCR_EMPTY_BODY="$2"; shift 2 ;;
         --dep-missing) DEP_MISSING="$2"; shift 2 ;;
         --ocr-failed) OCR_FAILED="$2"; shift 2 ;;
+        --png-compression-level) PNG_COMPRESSION_LEVEL="$2"; shift 2 ;;
         *) exit 1 ;;
     esac
 done
@@ -64,13 +66,18 @@ require_cmd() {
 crop_or_grim() {
     local out="$1" stream="$2"
 
+    local compress_args=()
+    if [[ -n "$PNG_COMPRESSION_LEVEL" ]]; then
+        compress_args=(-define "png:compression-level=$PNG_COMPRESSION_LEVEL")
+    fi
+
     if [[ -n "$FROZEN_SOURCE" && -f "$FROZEN_SOURCE" ]]; then
         if command -v magick &>/dev/null; then
-            if [[ "$stream" == "yes" ]]; then magick "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage png:-
-            else magick "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage "$out"; fi
+            if [[ "$stream" == "yes" ]]; then magick "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage "${compress_args[@]}" png:-
+            else magick "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage "${compress_args[@]}" "$out"; fi
         elif command -v convert &>/dev/null; then
-            if [[ "$stream" == "yes" ]]; then convert "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage png:-
-            else convert "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage "$out"; fi
+            if [[ "$stream" == "yes" ]]; then convert "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage "${compress_args[@]}" png:-
+            else convert "$FROZEN_SOURCE" -crop "$CROP_GEOMETRY" +repage "${compress_args[@]}" "$out"; fi
         else
             if [[ "$stream" == "yes" ]]; then grim -g "$GEOMETRY" -
             else grim -g "$GEOMETRY" "$out"; fi

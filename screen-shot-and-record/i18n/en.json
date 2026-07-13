@@ -37,6 +37,10 @@
             "label": "Recording Save Folder",
             "description": "Folder where screen recordings are saved."
         },
+        "pngCompressionLevel": {
+            "label": "PNG Compression Level",
+            "description": "PNG compression level (0=uncompressed, 1=default, 9=maximum). Higher values slow down screenshots but reduce file size; lower values bloat PNG size and may cause clipboard copy failures."
+        },
         "notificationsEnabled": {
             "label": "Enable Notifications",
             "description": "Show success notifications for screenshots, OCR, and recording. Dependency missing alerts are always shown."
