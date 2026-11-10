@@ -10,7 +10,6 @@ ScreenShot {
 
     property list<var> windowRegions: []
     property var hoveredWindow: null
-    property var winMap: ({})
 
     onEnableWindowsSelectionChanged: {
         if (!root.enableWindowsSelection) {
@@ -46,6 +45,10 @@ ScreenShot {
         }
     }
 
+    // niri ≥ 26.11（PR #4711）在 `niri msg windows` 的 WindowLayout 里为
+    // 滚动布局的窗口提供了 tile_pos_in_workspace_view，坐标与旧的自定义
+    // `window-geometries` 请求一致（相对当前 workspace view 的 tile 位置）。
+    // 所以这里不再需要单独的 IPC 请求。
     Process {
         id: niriWindowsProc
         command: ["niri", "msg", "-j", "windows"]
@@ -54,11 +57,8 @@ ScreenShot {
             onStreamFinished: {
                 try {
                     const windows = JSON.parse(text)
-                    root.winMap = {}
-                    for (const w of windows) {
-                        root.winMap[String(w.id)] = w
-                    }
-                    niriGeomProc.running = true
+                    root.windowRegions = root.computeRegions(windows)
+                    Logger.d("ScreenShot", "[RegionSelector][Niri] Found", root.windowRegions.length, "windows on", root.screen?.name)
                 } catch (e) {
                     root.windowRegions = []
                     Logger.w("ScreenShot", "[Niri] windows parse error:", e)
@@ -73,56 +73,33 @@ ScreenShot {
         }
     }
 
-    Process {
-        id: niriGeomProc
-        command: ["niri", "msg", "-j", "window-geometries"]
-        running: false
-        stdout: StdioCollector {
-            onStreamFinished: {
-                try {
-                    const geometries = JSON.parse(text)
-                    root.windowRegions = root.computeRegions(geometries)
-                    Logger.d("ScreenShot", "[RegionSelector][Niri] Found", root.windowRegions.length, "windows on", root.screen?.name)
-                } catch (e) {
-                    root.windowRegions = []
-                    Logger.w("ScreenShot", "[Niri] geometries parse error:", e)
-                }
-            }
-        }
-        onExited: (code) => {
-            if (code !== 0) {
-                root.windowRegions = []
-            }
-        }
-    }
-
-    function computeRegions(geometries) {
-        if (!Array.isArray(geometries)) {
-            Logger.w("ScreenShot", "[Niri] computeRegions: geometries is not an array")
+    function computeRegions(windows) {
+        if (!Array.isArray(windows)) {
+            Logger.w("ScreenShot", "[Niri] computeRegions: windows is not an array")
             return []
         }
 
-        const focusedEntry = Object.entries(root.winMap).find(([id, w]) => w.is_focused === true)
-        if (!focusedEntry) {
+        const focused = windows.find((w) => w.is_focused === true)
+        if (!focused) {
             Logger.d("ScreenShot", "[Niri] computeRegions: no focused window")
             return []
         }
-        const activeWsId = Number(focusedEntry[1].workspace_id ?? 0)
+        const activeWsId = Number(focused.workspace_id ?? 0)
 
-        const outputName = String(root.screen?.name ?? "")
         const outputWidth = Number(root.screen?.width ?? 0)
         const outputHeight = Number(root.screen?.height ?? 0)
 
-
         const result = []
-        for (const g of geometries) {
-            const win = root.winMap[String(g.id)]
-            if (!win) continue
+        for (const win of windows) {
             if (Number(win.workspace_id ?? 0) !== activeWsId) continue
 
             const l = win.layout
-            const tileX = Number(g.x)
-            const tileY = Number(g.y)
+            // 不在 view 内的 tile 该字段为 null；可见（含部分可见）的才有值。
+            const tilePos = l?.tile_pos_in_workspace_view
+            if (!Array.isArray(tilePos)) continue
+
+            const tileX = Number(tilePos[0] ?? 0)
+            const tileY = Number(tilePos[1] ?? 0)
             const winOffX = Number(l.window_offset_in_tile[0] ?? 0)
             const winOffY = Number(l.window_offset_in_tile[1] ?? 0)
             const winW = Number(l.window_size[0] ?? 0)
@@ -142,7 +119,7 @@ ScreenShot {
                 height: Math.round(winH),
                 title: String(win.title ?? ""),
                 cls: String(win.app_id ?? ""),
-                address: String(g.id ?? ""),
+                address: String(win.id ?? ""),
                 floating: win.is_floating === true
             })
         }
