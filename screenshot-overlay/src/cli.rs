@@ -85,7 +85,16 @@ pub struct Args {
     pub surface: [u8; 3],
 
     /// Bar card fill.
-    #[arg(long, value_parser = parse_hex, default_value = "#1e2023")]
+    ///
+    /// The Noctalia role was renamed from `surface_variant` to `surface_container`
+    /// at plugin API 43; the plugin now passes the new name, and the old spelling
+    /// stays accepted so an older caller does not break.
+    #[arg(
+        long = "surface-container",
+        alias = "surface-variant",
+        value_parser = parse_hex,
+        default_value = "#1e2023"
+    )]
     pub surface_variant: [u8; 3],
 
     /// Bar label and icon colour.
