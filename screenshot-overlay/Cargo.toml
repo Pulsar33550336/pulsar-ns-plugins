@@ -1,0 +1,47 @@
+[package]
+name = "screenshot-overlay"
+version = "0.1.0"
+edition = "2021"
+
+# Standalone workspace: keep this crate out of any parent workspace.
+[workspace]
+
+[dependencies]
+clap = { version = "4.6.7", features = ["derive"] }
+cosmic-text = "0.19.0"
+env_logger = "0.11.11"
+image = { version = "0.25.10", default-features = false, features = ["png"] }
+libwayshot = { version = "0.9.0", default-features = false }
+log = "0.4.34"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+smithay-client-toolkit = "0.21.1"
+wayland-client = "0.31.15"
+
+[dev-dependencies]
+# The benchmark framework, benchmark target only — it never reaches the binary.
+# `default-features = false` drops criterion's rayon and plotters backends: the
+# HTML reports and gnuplot plots are a lot of tree for output nobody reads in a
+# terminal, and `cargo_bench_support` is the only feature that matters, being the
+# "I am being run by `cargo bench`" switch.
+criterion = { version = "0.8", default-features = false, features = ["cargo_bench_support"] }
+
+# The headless render benchmark. `harness = false` is criterion's requirement: it
+# supplies its own `main` through `criterion_main!`. Keeping it in `benches/`
+# rather than behind an env var in `main.rs` is the point — it is a separate
+# program, so it does not ship inside the binary.
+[[bench]]
+name = "render"
+harness = false
+
+# Neither the library nor the binary has benchmarks of its own. Without these,
+# `cargo bench` also runs their unit tests through libtest in bench mode — a
+# screen of empty "ignored" lines — and criterion's own arguments (`--quick`)
+# are rejected by libtest before they reach the benchmark that understands them.
+[lib]
+bench = false
+
+[[bin]]
+name = "screenshot-overlay"
+path = "src/main.rs"
+bench = false

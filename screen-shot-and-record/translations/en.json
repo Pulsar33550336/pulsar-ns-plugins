@@ -1,0 +1,95 @@
+{
+  "tooltip": "Screenshot, OCR and screen recording",
+  "panel": {
+    "title": "Screenshot",
+    "stop": "Stop recording"
+  },
+  "target": {
+    "screenshot": "Screenshot",
+    "ocr": "OCR",
+    "search": "Image Search",
+    "record": "Screen Recording",
+    "recordsound": "Screen Recording (with Audio)"
+  },
+  "copied": {
+    "title": "Screenshot copied",
+    "body": "Image copied to the clipboard"
+  },
+  "saved": {
+    "title": "Screenshot saved"
+  },
+  "ocr": {
+    "done-title": "OCR complete",
+    "copied-body": "Recognized text copied to the clipboard",
+    "empty-body": "No text detected in the selection"
+  },
+  "search": {
+    "done-title": "Image search",
+    "opened-body": "Opened the selection in Google Lens"
+  },
+  "recording": {
+    "starting-title": "Starting recording",
+    "stopped-title": "Recording stopped",
+    "stopped-body": "Saved to the recording folder"
+  },
+  "missing": {
+    "title": "A required tool is missing",
+    "tool": "{tool} is not installed, so this action cannot run."
+  },
+  "error": {
+    "title": "Screenshot overlay failed",
+    "no-data-dir": "No writable data directory for the capture.",
+    "no-plugin-dir": "The plugin directory could not be found, so capture.sh is missing.",
+    "no-report": "The overlay did not report what happened.",
+    "no-capture": "The captured image is gone; nothing to act on.",
+    "no-region": "The overlay reported no region, so there is nothing to record.",
+    "not-started": "That action could not be started; too many plugin commands are already running.",
+    "no-record-dir": "Could not create the recording folder {dir}: {reason}",
+    "launch": "The overlay could not be started: {reason}",
+    "record-failed": "wf-recorder could not be started.",
+    "copy-failed": "The screenshot could not be copied to the clipboard.",
+    "edit-failed": "The editor exited with an error; nothing was saved.",
+    "ocr-failed": "tesseract ran, but the text could not be copied.",
+    "search-failed": "The image could not be uploaded for search.",
+    "action-failed": "The {action} action failed ({reason}).",
+    "unknown-target": "Unknown target {target}."
+  },
+  "settings": {
+    "enable_cross": {
+      "label": "Enable Crosshair",
+      "description": "Whether the overlay aims with a crosshair."
+    },
+    "enable_windows_selection": {
+      "label": "Enable Window Detection",
+      "description": "Allow clicking a window to select its whole region, on compositors that can report window geometry."
+    },
+    "screenshot_editor": {
+      "label": "Screenshot Annotation Tool",
+      "description": "Command run on a right-click selection, as <tool> -f <in> -o <out>. Needs to be pre-installed; satty gets its own flag names."
+    },
+    "keep_source_screenshot": {
+      "label": "Keep Source Screenshot",
+      "description": "Keep the *_source.png the editor was given, next to the file it saved."
+    },
+    "save_path": {
+      "label": "Screenshot Save Folder",
+      "description": "Folder where screenshots are written."
+    },
+    "recording_save_path": {
+      "label": "Recording Save Folder",
+      "description": "Folder where screen recordings are written."
+    },
+    "png_compression_level": {
+      "label": "PNG Compression Level",
+      "description": "PNG compression level (0=fastest, 9=smallest). Higher values take longer to write; lower values are faster and produce bigger files, which can make copying to the clipboard fail."
+    },
+    "notifications_enabled": {
+      "label": "Enable Notifications",
+      "description": "Show success notifications for screenshots, OCR and recording. Missing tools and failures are always reported."
+    },
+    "recording_notifications": {
+      "label": "Recording Notifications",
+      "description": "Show notifications when a recording starts or stops."
+    }
+  }
+}

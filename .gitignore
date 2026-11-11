@@ -1,1 +1,6 @@
-*/settings.json
+/target
+/result
+/result-*
+.venv/
+__pycache__/
+/ssr-overlay-demo/

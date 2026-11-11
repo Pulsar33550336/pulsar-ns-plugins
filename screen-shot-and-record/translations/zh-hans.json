@@ -1,0 +1,95 @@
+{
+  "tooltip": "截图、文字识别与录屏",
+  "panel": {
+    "title": "屏幕截图",
+    "stop": "停止录屏"
+  },
+  "target": {
+    "screenshot": "截图",
+    "ocr": "文字识别",
+    "search": "图像搜索",
+    "record": "录屏",
+    "recordsound": "录屏（有声音）"
+  },
+  "copied": {
+    "title": "截图已复制",
+    "body": "图像已复制到剪贴板"
+  },
+  "saved": {
+    "title": "截图已保存"
+  },
+  "ocr": {
+    "done-title": "文字识别完成",
+    "copied-body": "识别文本已复制到剪贴板",
+    "empty-body": "所选区域未检测到文字"
+  },
+  "search": {
+    "done-title": "图像搜索",
+    "opened-body": "已在 Google Lens 中打开所选区域"
+  },
+  "recording": {
+    "starting-title": "正在开始录屏",
+    "stopped-title": "录屏已停止",
+    "stopped-body": "已保存到录屏文件夹"
+  },
+  "missing": {
+    "title": "缺少必需的工具",
+    "tool": "未安装 {tool}，无法执行此操作。"
+  },
+  "error": {
+    "title": "截图叠加层出错",
+    "no-data-dir": "没有可写入的数据目录，无法保存选区。",
+    "no-plugin-dir": "找不到插件目录，capture.sh 缺失。",
+    "no-report": "叠加层没有报告发生了什么。",
+    "no-capture": "截图文件已不存在，没有可操作的内容。",
+    "no-region": "叠加层没有报告选区，无法开始录制。",
+    "no-record-dir": "无法创建录屏文件夹 {dir}：{reason}",
+    "launch": "无法启动叠加层：{reason}",
+    "record-failed": "无法启动 wf-recorder。",
+    "copy-failed": "截图无法复制到剪贴板。",
+    "edit-failed": "标注工具异常退出，没有保存任何内容。",
+    "ocr-failed": "tesseract 已运行，但文本无法复制。",
+    "search-failed": "图像上传失败，无法进行搜索。",
+    "not-started": "无法启动该操作：已有太多插件命令在运行。",
+    "action-failed": "{action} 操作失败（{reason}）。",
+    "unknown-target": "未知的目标 {target}。"
+  },
+  "settings": {
+    "enable_cross": {
+      "label": "启用十字线瞄准",
+      "description": "叠加层是否使用十字线瞄准。"
+    },
+    "enable_windows_selection": {
+      "label": "启用窗口检测",
+      "description": "在能够报告窗口几何信息的合成器上，允许点击窗口直接选中它的整个区域。"
+    },
+    "screenshot_editor": {
+      "label": "截图标注工具",
+      "description": "收到右键选区后按 <工具> -f <输入> -o <输出> 调用。需要预先安装；satty 使用自己的参数名。"
+    },
+    "keep_source_screenshot": {
+      "label": "保留源截图",
+      "description": "保留交给标注工具的 *_source.png，与它保存的文件放在一起。"
+    },
+    "save_path": {
+      "label": "截图保存文件夹",
+      "description": "截图写入的文件夹。"
+    },
+    "recording_save_path": {
+      "label": "录屏保存文件夹",
+      "description": "屏幕录制文件写入的文件夹。"
+    },
+    "png_compression_level": {
+      "label": "PNG 压缩级别",
+      "description": "PNG 压缩级别（0=最快速度，9=最小体积）。数值越大，写文件越慢；数值越低，速度越快，文件越大，可能导致复制到剪贴板失败。"
+    },
+    "notifications_enabled": {
+      "label": "启用通知",
+      "description": "显示截图、文字识别和录屏的成功通知。缺少工具和失败始终会提示。"
+    },
+    "recording_notifications": {
+      "label": "录屏通知",
+      "description": "在录屏开始或停止时显示通知。"
+    }
+  }
+}

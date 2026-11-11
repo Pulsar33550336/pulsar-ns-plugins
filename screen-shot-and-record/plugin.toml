@@ -1,0 +1,120 @@
+id = "pulsar/screen-shot-and-record"
+name = "ScreenShot & Record"
+version = "0.2.0"
+# 31 is the floor: the widget reads the theme through `noctalia.getColor()`.
+# It also needs 22 (`require` for the shared lib modules) and 24 (`runAsync` with
+# an argv table) — both below the floor, so 31 is the binding constraint.
+plugin_api = 43
+author = "Pulsar"
+license = "GPL-3.0-or-later"
+icon = "screenshot"
+description = "Region screenshots, OCR, reverse image search and screen recording, themed from the shell palette."
+tags = ["bar", "panel", "recording", "system", "utility"]
+
+# The overlay itself. It ships on its own — a plugin repo cannot carry a compiled
+# binary — so this declares the command the plugin shells out to, plus the tools
+# each target needs. None of them block enabling the plugin; a target whose tool
+# is missing reports that instead of failing quietly.
+dependencies = [
+    "screenshot-overlay",
+    "wl-clipboard",
+    "tesseract",
+    "curl",
+    "jq",
+    "wf-recorder",
+]
+
+# Settings are plugin-level rather than per-widget: the panel is a second entry
+# and has to see the same values, and these describe the tool, not the icon.
+# Every key below is read by `lib/overlay.luau`, once, for both entries.
+
+[[setting]]
+key = "enable_cross"
+type = "bool"
+label_key = "settings.enable_cross.label"
+description_key = "settings.enable_cross.description"
+default = true
+
+[[setting]]
+key = "enable_windows_selection"
+type = "bool"
+label_key = "settings.enable_windows_selection.label"
+description_key = "settings.enable_windows_selection.description"
+default = true
+
+[[setting]]
+key = "screenshot_editor"
+type = "string"
+label_key = "settings.screenshot_editor.label"
+description_key = "settings.screenshot_editor.description"
+default = "swappy"
+
+[[setting]]
+key = "keep_source_screenshot"
+type = "bool"
+label_key = "settings.keep_source_screenshot.label"
+description_key = "settings.keep_source_screenshot.description"
+default = false
+
+[[setting]]
+key = "save_path"
+type = "folder"
+label_key = "settings.save_path.label"
+description_key = "settings.save_path.description"
+default = "~/Pictures/Screenshots"
+
+[[setting]]
+key = "recording_save_path"
+type = "folder"
+label_key = "settings.recording_save_path.label"
+description_key = "settings.recording_save_path.description"
+default = "~/Videos"
+
+[[setting]]
+key = "png_compression_level"
+type = "int"
+label_key = "settings.png_compression_level.label"
+description_key = "settings.png_compression_level.description"
+default = 1
+min = 0
+max = 9
+
+[[setting]]
+key = "notifications_enabled"
+type = "bool"
+label_key = "settings.notifications_enabled.label"
+description_key = "settings.notifications_enabled.description"
+default = true
+
+[[setting]]
+key = "recording_notifications"
+type = "bool"
+label_key = "settings.recording_notifications.label"
+description_key = "settings.recording_notifications.description"
+default = true
+
+# Always-live IPC surface for keybinds; see `service.luau` for why this is a
+# service and not the panel or the bar widget.
+[[service]]
+id = "ipc"
+entry = "service.luau"
+
+# Bar icon. Left click opens the panel below.
+[[widget]]
+id = "widget"
+entry = "widget.luau"
+
+# The target list, in the shape of the QML plugin's Panel.qml. Sized here rather
+# than by content, because a panel surface is created at a fixed size: five rows
+# plus the title, with room for the "stop recording" row that replaces two of
+# them while a recording is running.
+[[panel]]
+id = "panel"
+entry = "panel.luau"
+width = 300
+height = 360
+# Open under the bar icon that was clicked. Worth a default because it is not a
+# layout preference — it is what a panel launched from an icon should obviously
+# do. `placement` and `position` are deliberately left unset: the host injects
+# those and the user picks them in Settings → Plugins.
+open_near_click = true
