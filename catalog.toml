@@ -1,0 +1,22 @@
+# This file is auto-generated. Do not edit manually.
+# Do not include it in your commit.
+# Noctalia plugins catalog.
+# Index of every plugin this source ships: the minimum needed to render, search,
+# and compat-check the list. The per-plugin plugin.toml stays authoritative; the
+# host re-reads it on enable. Keep one [[plugin]] row per plugin subdirectory.
+# A [[plugin.release]] row names an older revision for a Noctalia below the tip's
+# plugin_api, so an older release stays installable instead of the plugin vanishing.
+# On every row, updated_at dates the commit that first shipped that row's version.
+
+[[plugin]]
+id = "pulsar/screen-shot-and-record"
+name = "ScreenShot & Record"
+version = "0.2.0"
+updated_at = 1794362594
+added_at = 1794362594
+author = "Pulsar"
+license = "GPL-3.0-or-later"
+icon = "screenshot"
+description = "Region screenshots, OCR, reverse image search and screen recording, themed from the shell palette."
+plugin_api = 43
+tags = ["bar", "panel", "recording", "system", "utility"]
