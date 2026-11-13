@@ -24,8 +24,8 @@ tags = ["bar", "panel", "recording", "system", "utility"]
 [[plugin]]
 id = "pulsar/splayer-lyrics"
 name = "SPlayer-Next Lyrics"
-version = "1.0.0"
-updated_at = 1794566646
+version = "1.0.1"
+updated_at = 1794567454
 added_at = 1794566646
 author = "Pulsar"
 license = "GPL-3.0-or-later"
