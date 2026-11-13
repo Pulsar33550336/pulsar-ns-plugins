@@ -1,6 +1,6 @@
 id = "pulsar/splayer-lyrics"
 name = "SPlayer-Next Lyrics"
-version = "1.0.0"
+version = "1.0.1"
 plugin_api = 17
 author = "Pulsar"
 license = "GPL-3.0-or-later"
@@ -70,14 +70,16 @@ key = "extra_mode"
 type = "select"
 label_key = "settings.extra_mode.label"
 description_key = "settings.extra_mode.description"
-default = "background-duet"
+default = "duet-translation-next"
 options = [
-  { value = "none", label_key = "settings.extra_mode.options.none" },
-  { value = "background-duet", label_key = "settings.extra_mode.options.background-duet" },
+  { value = "duet-translation-next", label_key = "settings.extra_mode.options.duet-translation-next" },
   { value = "duet-translation", label_key = "settings.extra_mode.options.duet-translation" },
-  { value = "translation-fallback-next", label_key = "settings.extra_mode.options.translation-fallback-next" },
+  { value = "translation-next", label_key = "settings.extra_mode.options.translation-next" },
+  { value = "duet-next", label_key = "settings.extra_mode.options.duet-next" },
+  { value = "duet", label_key = "settings.extra_mode.options.duet" },
   { value = "translation", label_key = "settings.extra_mode.options.translation" },
   { value = "next", label_key = "settings.extra_mode.options.next" },
+  { value = "none", label_key = "settings.extra_mode.options.none" },
 ]
 
 [[widget.setting]]

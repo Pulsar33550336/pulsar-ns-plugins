@@ -22,14 +22,16 @@
     },
     "extra_mode": {
       "label": "Secondary line mode",
-      "description": "Choose what the secondary line shows. Background/duet first prefers background or duet, then translation, then the next line.",
+      "description": "Fallback path for the secondary line: the first available source wins.",
       "options": {
-        "none": "None",
-        "background-duet": "Background/duet first",
+        "duet-translation-next": "Duet → translation → next line",
         "duet-translation": "Duet → translation",
-        "translation-fallback-next": "Translation, fallback to next line",
+        "translation-next": "Translation → next line",
+        "duet-next": "Duet → next line",
+        "duet": "Duet only",
         "translation": "Translation only",
-        "next": "Next line only"
+        "next": "Next line only",
+        "none": "None"
       }
     },
     "hide_when_idle": {

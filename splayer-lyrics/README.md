@@ -59,19 +59,23 @@ Noctalia widget `widget`:
 | `prefix` | string | empty | Fixed text before the lyric. |
 | `max_chars` | int | `40` | Maximum characters; 0 means no limit. |
 | `poll_ms` | int | `300` | Poll interval for `/state`, in milliseconds. |
-| `extra_mode` | select | `background-duet` | Secondary-line mode: `none`, `background-duet`, `duet-translation`, `translation-fallback-next`, `translation`, or `next`. |
+| `extra_mode` | select | `duet-translation-next` | Fallback path for the secondary line; see the values below. |
 | `hide_when_idle` | bool | `true` | Hide while offline, paused, or without lyrics. |
 | `show_when_paused` | bool | `false` | Keep the last line while paused. |
 | `show_title_when_no_lyric` | bool | `true` | Show the track title when no lyric is available. |
 
-`extra_mode` values:
+`extra_mode` values, each a fallback path for the secondary line:
 
-- `none`: no secondary line.
-- `background-duet`: background/duet first, then translation, then the next line.
-- `duet-translation`: for a duet line, use the duet line as the main line and its translation as the secondary line; other lines use translation, falling back to the next line.
-- `translation-fallback-next`: translation, falling back to the next line.
+- `duet-translation-next`: duet, then translation, then the next line.
+- `duet-translation`: duet, then translation.
+- `translation-next`: translation, then the next line.
+- `duet-next`: duet, then the next line.
+- `duet`: duet only.
 - `translation`: translation only.
 - `next`: next line only.
+- `none`: no secondary line.
+
+Background-vocal lines (`isBG`) are not a secondary source. When the current line is a background line, the main line falls back to its parent line; the background line itself is never shown as the secondary line.
 
 Companion SPlayer-Next plugin:
 

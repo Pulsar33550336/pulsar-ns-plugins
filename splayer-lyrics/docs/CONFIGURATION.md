@@ -17,20 +17,24 @@
 | --- | --- | --- |
 | 最大字符数 | 40 | 超出后截断并加省略号；0 表示不限制 |
 | 轮询间隔 | 300ms | 向桥询问当前行 |
-| 副行模式 | `background-duet` | `none` / `background-duet` / `duet-translation` / `translation-fallback-next` / `translation` / `next` |
+| 副行模式 | `duet-translation-next` | 回退路径，取值见下 |
 | 文字前缀 | 空 | 显示在歌词前的固定文字 |
 | 空闲时隐藏 | 开 | 桥离线、未播放或无歌词时隐藏组件 |
 | 暂停时保留歌词 | 关 | 暂停时保留最后一行 |
 | 无歌词时显示歌名 | 开 | 纯音乐段落或无歌词时显示歌名 |
 
-副行模式：
+副行模式（回退路径，按顺序取第一个可用的候选）：
 
-- `none`：不显示副行；
-- `background-duet`：优先背景/对唱，其次翻译，最后下一行；
-- `duet-translation`：对唱行作为主行，副行用它的翻译；其他行按翻译回退下一行；
-- `translation-fallback-next`：翻译，没有则下一行；
+- `duet-translation-next`：对唱 → 翻译 → 下一行；
+- `duet-translation`：对唱 → 翻译；
+- `translation-next`：翻译 → 下一行；
+- `duet-next`：对唱 → 下一行；
+- `duet`：只显示对唱；
 - `translation`：只显示翻译；
-- `next`：只显示下一行。
+- `next`：只显示下一行；
+- `none`：无副行。
+
+背景和声行（`isBG`）不进入副行候选；当前行是背景和声时，主行回退到它所属的主行，和声行本身不会出现在副行。
 
 组件只负责显示，不处理点击或悬停；左键可以留给用户自己的绑定，中键是 Noctalia 内建的组件设置入口。
 

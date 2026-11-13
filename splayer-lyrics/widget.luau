@@ -43,17 +43,19 @@ local PORT = validPort(noctalia.getConfig("port"))
 local PREFIX = tostring(noctalia.getConfig("prefix") or "")
 local MAX_CHARS = clampInt(noctalia.getConfig("max_chars"), 40, 0, 300)
 local POLL_MS = clampInt(noctalia.getConfig("poll_ms"), 300, 100, 5000)
-local EXTRA_MODE = tostring(noctalia.getConfig("extra_mode") or "background-duet")
+local EXTRA_MODE = tostring(noctalia.getConfig("extra_mode") or "duet-translation-next")
 local EXTRA_MODES = {
-  ["none"] = true,
-  ["background-duet"] = true,
+  ["duet-translation-next"] = true,
   ["duet-translation"] = true,
-  ["translation-fallback-next"] = true,
+  ["translation-next"] = true,
+  ["duet-next"] = true,
+  ["duet"] = true,
   ["translation"] = true,
   ["next"] = true,
+  ["none"] = true,
 }
 if not EXTRA_MODES[EXTRA_MODE] then
-  EXTRA_MODE = "background-duet"
+  EXTRA_MODE = "duet-translation-next"
 end
 local HIDE_WHEN_IDLE = noctalia.getConfig("hide_when_idle") ~= false
 local SHOW_WHEN_PAUSED = noctalia.getConfig("show_when_paused") == true
@@ -164,12 +166,15 @@ local function render(data)
     local bgMainTranslation = trim(data.bgMainTranslation)
     local duetMain = trim(data.duetMain)
     local duetMainTranslation = trim(data.duetMainTranslation)
-    local background = trim(data.background)
     local duet = trim(data.duet)
     local nextLine = trim(data.next)
     local isBG = data.isBG == true
     local isDuet = data.isDuet == true
     local duetOverlap = data.duetOverlap == true
+
+    local allowDuet = string.find(EXTRA_MODE, "duet", 1, true) ~= nil
+    local allowTranslation = string.find(EXTRA_MODE, "translation", 1, true) ~= nil
+    local allowNext = string.find(EXTRA_MODE, "next", 1, true) ~= nil
 
     local mainText = current
     local mainTranslation = currentTranslation
@@ -178,68 +183,22 @@ local function render(data)
         mainText = bgMain
         mainTranslation = bgMainTranslation
       end
-    elseif isDuet and duetOverlap and EXTRA_MODE == "background-duet" then
+    elseif isDuet and duetOverlap and allowDuet then
       if duetMain ~= "" then
         mainText = duetMain
         mainTranslation = duetMainTranslation
       end
     end
 
-    if EXTRA_MODE == "background-duet" then
-      if isBG then
-        extra = background
-        extraKind = "bg"
-      elseif isDuet and duetOverlap then
-        if background ~= "" then
-          extra = background
-          extraKind = "bg"
-        elseif duet ~= "" then
-          extra = duet
-          extraKind = "duet"
-        end
-      elseif background ~= "" then
-        extra = background
-        extraKind = "bg"
-      end
-      if extra == "" then
-        if mainTranslation ~= "" then
-          extra = mainTranslation
-          extraKind = "translation"
-        elseif nextLine ~= "" then
-          extra = nextLine
-          extraKind = "next"
-        end
-      end
-    elseif EXTRA_MODE == "duet-translation" then
-      if isDuet and duetOverlap then
-        mainText = current
-        mainTranslation = currentTranslation
-      end
-      if mainTranslation ~= "" then
-        extra = mainTranslation
-        extraKind = "translation"
-      elseif nextLine ~= "" then
-        extra = nextLine
-        extraKind = "next"
-      end
-    elseif EXTRA_MODE == "translation-fallback-next" then
-      if mainTranslation ~= "" then
-        extra = mainTranslation
-        extraKind = "translation"
-      elseif nextLine ~= "" then
-        extra = nextLine
-        extraKind = "next"
-      end
-    elseif EXTRA_MODE == "translation" then
-      if mainTranslation ~= "" then
-        extra = mainTranslation
-        extraKind = "translation"
-      end
-    elseif EXTRA_MODE == "next" then
-      if nextLine ~= "" then
-        extra = nextLine
-        extraKind = "next"
-      end
+    if allowDuet and duet ~= "" then
+      extra = duet
+      extraKind = "duet"
+    elseif allowTranslation and mainTranslation ~= "" then
+      extra = mainTranslation
+      extraKind = "translation"
+    elseif allowNext and nextLine ~= "" then
+      extra = nextLine
+      extraKind = "next"
     end
 
     lyric = mainText
