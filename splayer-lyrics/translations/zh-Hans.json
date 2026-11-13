@@ -1,0 +1,48 @@
+{
+  "settings": {
+    "host": {
+      "label": "桥地址",
+      "description": "bridge.py 监听的地址，通常保持 127.0.0.1。"
+    },
+    "port": {
+      "label": "桥端口",
+      "description": "必须与 bridge.py 和 SPlayer-Next 插件里的端口一致（默认 33550）。"
+    },
+    "prefix": {
+      "label": "文字前缀",
+      "description": "显示在歌词前面的固定文字，留空则只显示歌词。"
+    },
+    "max_chars": {
+      "label": "最大字符数",
+      "description": "状态栏文字超过这个长度就截断，0 表示不限制。"
+    },
+    "poll_ms": {
+      "label": "轮询间隔（毫秒）",
+      "description": "组件多久向桥询问一次当前歌词。"
+    },
+    "extra_mode": {
+      "label": "副行模式",
+      "description": "选择状态栏副行显示什么。背景/对唱优先会先尝试背景或对唱，再翻译，最后下一行。",
+      "options": {
+        "none": "无副行",
+        "background-duet": "背景/对唱优先",
+        "duet-translation": "对唱 → 翻译",
+        "translation-fallback-next": "翻译，回退下一行",
+        "translation": "只显示翻译",
+        "next": "只显示下一行"
+      }
+    },
+    "hide_when_idle": {
+      "label": "空闲时隐藏",
+      "description": "桥离线、没有播放或没有歌词时隐藏整个组件。"
+    },
+    "show_when_paused": {
+      "label": "暂停时保留歌词",
+      "description": "暂停播放时继续显示最后一行，而不是隐藏组件。"
+    },
+    "show_title_when_no_lyric": {
+      "label": "无歌词时显示歌名",
+      "description": "纯音乐段落或歌曲没有歌词时，在状态栏显示歌名。"
+    }
+  }
+}

@@ -6,6 +6,7 @@ Rust helper they shell out to.
 ## Layout
 
 - `screen-shot-and-record/` — the plugin: `plugin.toml`, Luau entries, translations.
+- `splayer-lyrics/` — SPlayer-Next lyrics bar widget and its local bridge.
 - `screenshot-overlay/` — the standalone Wayland region-selection binary the plugin
   launches. It ships outside the plugin because a plugin repository cannot carry a
   compiled binary.

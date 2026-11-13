@@ -1,0 +1,102 @@
+id = "pulsar/splayer-lyrics"
+name = "SPlayer-Next Lyrics"
+version = "1.0.0"
+plugin_api = 17
+author = "Pulsar"
+license = "GPL-3.0-or-later"
+icon = "disc"
+description = "Show the current SPlayer-Next lyric in the bar, through a tiny local bridge."
+tags = ["bar", "music", "media"]
+
+# External commands the plugin runs. python3 runs bridge.py and the /quit
+# helper; setsid starts a new session, nohup ignores SIGHUP.
+dependencies = ["python3", "setsid", "nohup"]
+
+# 桥地址由所有 entry 共享，因此是插件级设置；必须与 bridge.py 和
+# SPlayer-Next 插件一致。
+[[setting]]
+key = "host"
+type = "string"
+label_key = "settings.host.label"
+description_key = "settings.host.description"
+default = "127.0.0.1"
+
+[[setting]]
+key = "port"
+type = "int"
+label_key = "settings.port.label"
+description_key = "settings.port.description"
+default = 33550
+min = 1024
+max = 65535
+
+# 管理 bridge.py 的生命周期。17 提供 onExit 的第二个 reason 参数；
+# 重载时也停止桥，避免改端口后旧实例继续监听。
+[[service]]
+id = "bridge"
+entry = "bridge.luau"
+
+[[widget]]
+id = "widget"
+entry = "widget.luau"
+
+[[widget.setting]]
+key = "prefix"
+type = "string"
+label_key = "settings.prefix.label"
+description_key = "settings.prefix.description"
+default = ""
+
+[[widget.setting]]
+key = "max_chars"
+type = "int"
+label_key = "settings.max_chars.label"
+description_key = "settings.max_chars.description"
+default = 40
+min = 0
+max = 300
+
+[[widget.setting]]
+key = "poll_ms"
+type = "int"
+label_key = "settings.poll_ms.label"
+description_key = "settings.poll_ms.description"
+default = 300
+min = 100
+max = 5000
+
+[[widget.setting]]
+key = "extra_mode"
+type = "select"
+label_key = "settings.extra_mode.label"
+description_key = "settings.extra_mode.description"
+default = "background-duet"
+options = [
+  { value = "none", label_key = "settings.extra_mode.options.none" },
+  { value = "background-duet", label_key = "settings.extra_mode.options.background-duet" },
+  { value = "duet-translation", label_key = "settings.extra_mode.options.duet-translation" },
+  { value = "translation-fallback-next", label_key = "settings.extra_mode.options.translation-fallback-next" },
+  { value = "translation", label_key = "settings.extra_mode.options.translation" },
+  { value = "next", label_key = "settings.extra_mode.options.next" },
+]
+
+[[widget.setting]]
+key = "hide_when_idle"
+type = "bool"
+label_key = "settings.hide_when_idle.label"
+description_key = "settings.hide_when_idle.description"
+default = true
+
+[[widget.setting]]
+key = "show_when_paused"
+type = "bool"
+label_key = "settings.show_when_paused.label"
+description_key = "settings.show_when_paused.description"
+default = false
+
+[[widget.setting]]
+key = "show_title_when_no_lyric"
+type = "bool"
+label_key = "settings.show_title_when_no_lyric.label"
+description_key = "settings.show_title_when_no_lyric.description"
+default = true

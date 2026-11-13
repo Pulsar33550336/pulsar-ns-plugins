@@ -1,0 +1,48 @@
+{
+  "settings": {
+    "host": {
+      "label": "Bridge host",
+      "description": "Address the local bridge listens on. Keep 127.0.0.1 unless you know why."
+    },
+    "port": {
+      "label": "Bridge port",
+      "description": "Must match the port in bridge.py and in the SPlayer-Next plugin (default 33550)."
+    },
+    "prefix": {
+      "label": "Text prefix",
+      "description": "Shown before the lyric. Leave empty to show the text alone."
+    },
+    "max_chars": {
+      "label": "Maximum characters",
+      "description": "Truncate the bar text after this many characters. 0 means no limit."
+    },
+    "poll_ms": {
+      "label": "Poll interval (ms)",
+      "description": "How often the widget asks the bridge for the current line."
+    },
+    "extra_mode": {
+      "label": "Secondary line mode",
+      "description": "Choose what the secondary line shows. Background/duet first prefers background or duet, then translation, then the next line.",
+      "options": {
+        "none": "None",
+        "background-duet": "Background/duet first",
+        "duet-translation": "Duet → translation",
+        "translation-fallback-next": "Translation, fallback to next line",
+        "translation": "Translation only",
+        "next": "Next line only"
+      }
+    },
+    "hide_when_idle": {
+      "label": "Hide when idle",
+      "description": "Hide the widget while the bridge is offline, nothing is playing, or there is no lyric."
+    },
+    "show_when_paused": {
+      "label": "Keep lyric while paused",
+      "description": "Keep the last line visible when playback is paused instead of hiding the widget."
+    },
+    "show_title_when_no_lyric": {
+      "label": "Show track title without lyrics",
+      "description": "Display the song title during instrumental sections or when a track has no lyrics."
+    }
+  }
+}
