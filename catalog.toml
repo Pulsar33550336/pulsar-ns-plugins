@@ -20,3 +20,16 @@ icon = "screenshot"
 description = "Region screenshots, OCR, reverse image search and screen recording, themed from the shell palette."
 plugin_api = 43
 tags = ["bar", "panel", "recording", "system", "utility"]
+
+[[plugin]]
+id = "pulsar/splayer-lyrics"
+name = "SPlayer-Next Lyrics"
+version = "1.0.0"
+updated_at = 1794566646
+added_at = 1794566646
+author = "Pulsar"
+license = "GPL-3.0-or-later"
+icon = "disc"
+description = "Show the current SPlayer-Next lyric in the bar, through a tiny local bridge."
+plugin_api = 17
+tags = ["bar", "music", "media"]
