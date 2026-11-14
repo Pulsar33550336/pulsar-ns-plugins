@@ -193,6 +193,18 @@ const updateTrackMeta = () => {
       : "";
 };
 
+// 短歌手名（如 Nea）不能做子串匹配，否则 "beneath"/"near" 会命中 "nea"。
+const containsWholeName = (lower, name) => {
+  if (!name) return false;
+  if (lower === name) return true;
+  if (name.length < 2) return false;
+  const pattern = new RegExp(
+    `(^|[^a-z0-9])${escapeRegExp(name)}([^a-z0-9]|$)`,
+    "i",
+  );
+  return pattern.test(lower);
+};
+
 const isCreditText = (line) => {
   const text = lineText(line);
   if (!text) return true;
@@ -210,18 +222,10 @@ const isCreditText = (line) => {
     typeof line.translatedLyric === "string" && line.translatedLyric.trim() !== "";
   if (!translated && asBool("filterTrackNames", true) && text.length <= 80) {
     const lower = text.toLowerCase();
-    if (
-      trackArtistNames.some(
-        (name) => lower === name || (name.length >= 3 && lower.includes(name)),
-      )
-    ) {
+    if (trackArtistNames.some((name) => containsWholeName(lower, name))) {
       return true;
     }
-    if (
-      trackAlbumName &&
-      (lower === trackAlbumName ||
-        (trackAlbumName.length >= 4 && lower.includes(trackAlbumName)))
-    ) {
+    if (trackAlbumName && containsWholeName(lower, trackAlbumName)) {
       return true;
     }
   }

@@ -235,7 +235,34 @@ const lines = [
   assert.equal(last().lyric, "We dance beneath the galaxy");
   assert.equal(last().currentTranslation, "我们在银河下跳舞");
 
+  // 短歌手名 Nea 不能子串命中 beneath/near。
+  const neaTrack = {
+    ...creditTrack,
+    artists: [{ name: "Nea" }],
+    album: { name: "Album" },
+  };
+  handlers.get("trackChange")({ track: neaTrack });
+  const neaLines = [
+    { words: [{ word: "We dance beneath the galaxy" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
+    { words: [{ word: "Conquering doubts that linger near" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
+    { words: [{ word: "Nea" }], translatedLyric: "", startTime: 2000, endTime: 3000, isBG: false, isDuet: false },
+    { words: [{ word: "Real line" }], translatedLyric: "", startTime: 3000, endTime: 4000, isBG: false, isDuet: false },
+  ];
+  handlers.get("lyricChange")({ lines: neaLines });
+  for (const index of [0, 1]) {
+    handlers.get("lineChange")({ index, position: index * 1000 + 100 });
+    await settle();
+    assert.equal(last().lyric, neaLines[index].words[0].word);
+  }
+  handlers.get("lineChange")({ index: 2, position: 2100 });
+  await settle();
+  assert.equal(last().lyric, "Conquering doubts that linger near");
+  handlers.get("lineChange")({ index: 3, position: 3100 });
+  await settle();
+  assert.equal(last().lyric, "Real line");
+
   // 制作信息前面带了前缀（例如「W HOYO-MiX」）也要按歌手名过滤。
+  handlers.get("trackChange")({ track: creditTrack });
   const wrappedLines = [
     { words: [{ word: "W HOYO-MiX" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
     { words: [{ word: "Real line" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
