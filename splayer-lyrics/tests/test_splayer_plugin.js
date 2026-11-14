@@ -206,6 +206,19 @@ const lines = [
   await settle();
   assert.equal(last().lyric, "Music in the air");
 
+  // 乐队/乐团署名也要过滤。
+  const orchestraLines = [
+    { words: [{ word: "乐队 Orchestra：国际首席爱乐乐团 International Master Philharmonic Orchestra" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
+    { words: [{ word: "Real line" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
+  ];
+  handlers.get("lyricChange")({ lines: orchestraLines });
+  handlers.get("lineChange")({ index: 0, position: 100 });
+  await settle();
+  assert.equal(last().lyric, "");
+  handlers.get("lineChange")({ index: 1, position: 1100 });
+  await settle();
+  assert.equal(last().lyric, "Real line");
+
   // 制作信息前面带了前缀（例如「W HOYO-MiX」）也要按歌手名过滤。
   const wrappedLines = [
     { words: [{ word: "W HOYO-MiX" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },

@@ -62,7 +62,7 @@ end = [
 
 ## 制作人员关键词
 
-默认列表覆盖常见中文角色（作词、作曲、编曲、制作人、混音、母带、录音、和声、演唱、吉他、贝斯、鼓、钢琴、弦乐、萨克斯、小号、长号、统筹、封面、设计、翻译、校对等）和英文角色（Music、Lyrics、Composer、Arranger、Producer、Mixing、Mastering、Guitar、Bass、Drums、Piano、Violin、Cello、Sax、Trumpet、Vocals、Recorded、Studio、Engineer、Written、Composed、Arranged、Produced、Performed、Lyricist、Songwriter 等）。
+默认列表覆盖常见中文角色（作词、作曲、编曲、制作人、混音、母带、录音、和声、演唱、吉他、贝斯、鼓、钢琴、弦乐、乐队、乐团、萨克斯、小号、长号、统筹、封面、设计、翻译、校对等）和英文角色（Music、Lyrics、Composer、Arranger、Producer、Mixing、Mastering、Guitar、Bass、Drums、Piano、Violin、Cello、Orchestra、Sax、Trumpet、Vocals、Recorded、Studio、Engineer、Written、Composed、Arranged、Produced、Performed、Lyricist、Songwriter 等）。
 
 匹配规则：
 
