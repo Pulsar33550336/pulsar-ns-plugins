@@ -62,7 +62,7 @@ end = [
 
 ## 制作人员关键词
 
-默认列表覆盖常见中文角色（作词、作曲、编曲、制作人、混音、母带、录音、和声、演唱、吉他、贝斯、鼓、钢琴、弦乐、乐队、乐团、萨克斯、小号、长号、统筹、封面、设计、翻译、校对等）和英文角色（Music、Lyrics、Composer、Arranger、Producer、Mixing、Mastering、Guitar、Bass、Drums、Piano、Violin、Cello、Orchestra、Sax、Trumpet、Vocals、Recorded、Studio、Engineer、Written、Composed、Arranged、Produced、Performed、Lyricist、Songwriter 等）。
+默认列表覆盖常见中文角色（作词、作曲、编曲、制作人、混音、母带、录音、和声、演唱、吉他、贝斯、鼓、钢琴、弦乐、乐队、乐团、民族管乐、管乐、萨克斯、小号、长号、统筹、封面、设计、翻译、校对等）和英文角色（Music、Lyrics、Composer、Arranger、Producer、Mixing、Mastering、Guitar、Bass、Drums、Piano、Violin、Cello、Orchestra、Ethnic Wind Instruments、Sax、Trumpet、Vocals、Recorded、Studio、Engineer、Written、Composed、Arranged、Produced、Performed、Lyricist、Songwriter 等）。
 
 匹配规则：
 
@@ -73,7 +73,7 @@ end = [
 
 单字符关键词（`词`、`曲`、`鼓`、`笛` 等）只认冒号形式，避免误伤「一曲」「曲终人散」。关键词列表留空则只保留歌手/专辑署名过滤；完全关闭请用「过滤制作人员行」总开关。
 
-制作署名拆成两行时（第二行没有冒号，例如 `prime sound studio form`），如果它夹在两条制作行之间，也会按制作信息处理。当前行是制作信息时，组件回退到上一条正常歌词并保留它的翻译；制作署名不会作为副行。
+拆行署名：前一行是带冒号的制作行，且后一行也是制作行，或当前行是最后一行时，也按制作信息处理。当前行是制作信息时，组件回退到上一条正常歌词并保留它的翻译；制作署名不会作为副行。
 
 ## 改端口
 

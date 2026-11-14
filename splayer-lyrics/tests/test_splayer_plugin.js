@@ -210,8 +210,23 @@ const lines = [
   const orchestraLines = [
     { words: [{ word: "乐队 Orchestra：国际首席爱乐乐团 International Master Philharmonic Orchestra" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
     { words: [{ word: "Real line" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
+    { words: [{ word: "Real next" }], translatedLyric: "", startTime: 2000, endTime: 3000, isBG: false, isDuet: false },
   ];
   handlers.get("lyricChange")({ lines: orchestraLines });
+  handlers.get("lineChange")({ index: 0, position: 100 });
+  await settle();
+  assert.equal(last().lyric, "");
+  handlers.get("lineChange")({ index: 1, position: 1100 });
+  await settle();
+  assert.equal(last().lyric, "Real line");
+
+  // 民族管乐署名也要过滤。
+  const ethnicLines = [
+    { words: [{ word: "民族管乐 Ethnic Wind Instruments: Sandro Friedrich" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
+    { words: [{ word: "Real line" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
+    { words: [{ word: "Real next" }], translatedLyric: "", startTime: 2000, endTime: 3000, isBG: false, isDuet: false },
+  ];
+  handlers.get("lyricChange")({ lines: ethnicLines });
   handlers.get("lineChange")({ index: 0, position: 100 });
   await settle();
   assert.equal(last().lyric, "");
@@ -294,6 +309,7 @@ const lines = [
     { words: [{ word: "出品 Produced by：HOYO-MiX" }], translatedLyric: "", startTime: 30000, endTime: 32000, isBG: false, isDuet: false },
     { words: [{ word: "弦乐四重奏 String Quartet：刘星弦乐团" }], translatedLyric: "", startTime: 32000, endTime: 33000, isBG: false, isDuet: false },
     { words: [{ word: "Actual lyric" }], translatedLyric: "", startTime: 33000, endTime: 35000, isBG: false, isDuet: false },
+    { words: [{ word: "Real next" }], translatedLyric: "", startTime: 35000, endTime: 37000, isBG: false, isDuet: false },
   ];
   handlers.get("lyricChange")({ lines: fullCreditBlock });
   for (let index = 0; index < 16; index += 1) {
@@ -304,6 +320,9 @@ const lines = [
   handlers.get("lineChange")({ index: 16, position: 33100 });
   await settle();
   assert.equal(last().lyric, "Actual lyric");
+  handlers.get("lineChange")({ index: 17, position: 35100 });
+  await settle();
+  assert.equal(last().lyric, "Real next");
 
   // 歌词段之后的短署名行（如单独的 HOYO-MiX）也要按歌手名过滤。
   const lateCreditLines = [
@@ -325,13 +344,14 @@ const lines = [
   await settle();
   assert.equal(last().lyric, "Real next");
 
-  // 制作署名拆成第二行（无冒号）时也过滤；当前行回退到上一条正常歌词。
+  // 制作署名拆成第二行时也过滤；当前行回退到上一条正常歌词。
   const continuationLines = [
     { words: [{ word: "Real lyric" }], translatedLyric: "真实歌词", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
     { words: [{ word: "人声录音师 Recording Engineer：Someone" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
     { words: [{ word: "prime sound studio form" }], translatedLyric: "", startTime: 2000, endTime: 3000, isBG: false, isDuet: false },
     { words: [{ word: "混音师 Mixing Engineer：Someone" }], translatedLyric: "", startTime: 3000, endTime: 4000, isBG: false, isDuet: false },
     { words: [{ word: "Real next" }], translatedLyric: "", startTime: 4000, endTime: 5000, isBG: false, isDuet: false },
+    { words: [{ word: "Real next 2" }], translatedLyric: "", startTime: 5000, endTime: 6000, isBG: false, isDuet: false },
   ];
   handlers.get("lyricChange")({ lines: continuationLines });
   for (const index of [1, 2, 3]) {
@@ -345,6 +365,21 @@ const lines = [
   handlers.get("lineChange")({ index: 4, position: 4100 });
   await settle();
   assert.equal(last().lyric, "Real next");
+  handlers.get("lineChange")({ index: 5, position: 5100 });
+  await settle();
+  assert.equal(last().lyric, "Real next 2");
+
+  // 拆行署名的下一行是最后一行时也按制作信息处理。
+  const lastLineCredit = [
+    { words: [{ word: "Real lyric" }], translatedLyric: "真实歌词", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
+    { words: [{ word: "人声录音师 Recording Engineer：Someone" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
+    { words: [{ word: "prime sound studio form" }], translatedLyric: "", startTime: 2000, endTime: 3000, isBG: false, isDuet: false },
+  ];
+  handlers.get("lyricChange")({ lines: lastLineCredit });
+  handlers.get("lineChange")({ index: 2, position: 2100 });
+  await settle();
+  assert.equal(last().lyric, "Real lyric");
+  assert.equal(last().currentTranslation, "真实歌词");
 
   // 关掉过滤后，制作人员行恢复显示。
   settings.filterCredits = false;
@@ -360,6 +395,7 @@ const lines = [
     { words: [{ word: "CustomRole: X" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
     { words: [{ word: "A+B: Y" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
     { words: [{ word: "AAAB: Z" }], translatedLyric: "", startTime: 2000, endTime: 3000, isBG: false, isDuet: false },
+    { words: [{ word: "Real next" }], translatedLyric: "", startTime: 3000, endTime: 4000, isBG: false, isDuet: false },
   ];
   handlers.get("lyricChange")({ lines: customLines });
   for (const index of [0, 1]) {

@@ -17,12 +17,12 @@ const DEFAULT_CREDIT_KEYWORDS = [
   "混音", "混音师", "母带", "母带师", "录音", "录音师", "配唱",
   "和声", "和音", "合声", "人声", "演唱", "原唱",
   "吉他", "贝斯", "鼓", "键盘", "钢琴", "弦乐", "乐队", "乐团", "小提琴", "中提琴",
-  "大提琴", "弦乐四重奏", "四重奏", "萨克斯", "小号", "长号", "口琴", "笛", "琵琶", "古筝", "二胡",
+  "大提琴", "弦乐四重奏", "四重奏", "民族管乐", "管乐", "萨克斯", "小号", "长号", "口琴", "笛", "琵琶", "古筝", "二胡",
   "封面", "设计", "翻译", "校对",
   "Music", "Lyrics", "Lyric", "Composer", "Arranger", "Producer",
   "Mixing", "Mix", "Mastering", "Master", "Guitar", "Bass", "Drums",
   "Piano", "Violin", "Viola", "Cello", "Orchestra", "String Quartet", "Quartet", "Sax", "Saxophone", "Trumpet",
-  "Trombone", "Vocals", "Vocal", "Recorded", "Recording", "Studio",
+  "Trombone", "Ethnic Wind Instruments", "Wind Instruments", "Vocals", "Vocal", "Recorded", "Recording", "Studio",
   "Engineer", "Written", "Composed", "Arranged", "Produced", "Performed",
   "Lyricist", "Songwriter", "Coordinator", "Design", "Cover", "Art",
   "Translation", "OP", "SP", "A&R",
@@ -240,19 +240,16 @@ const rebuildCreditFlags = () => {
     return enabled ? isCreditText(line) : false;
   });
 
-  // 制作署名有时拆成两行，第二行没有冒号（如 "prime sound studio form"）。
-  // 紧跟带冒号的制作行、且本身没有冒号的短行，也按制作信息处理。
+  // 制作署名有时拆成两行（如 "prime sound studio form"）。紧跟带冒号的
+  // 制作行，并且后面还是制作行，或自己就是最后一行时，也按制作信息处理。
   if (enabled) {
     for (let i = 1; i < flags.length; i += 1) {
       if (flags[i]) continue;
-      const text = lineText(lines[i]);
-      if (!text || /[:：]/.test(text) || text.length > 80) continue;
       const previous = lineText(lines[i - 1]);
       if (
         flags[i - 1] &&
         /[:：]/.test(previous) &&
-        i + 1 < flags.length &&
-        flags[i + 1]
+        (i + 1 >= flags.length || flags[i + 1])
       ) {
         flags[i] = true;
       }
