@@ -85,7 +85,7 @@ Companion SPlayer-Next plugin:
 | `port` | number | `33550` | Bridge port. |
 | `filterCredits` | switch | `true` | Filter production-credit lines. |
 | `creditKeywords` | text | built-in list | Credit keywords, separated by commas, semicolons, or newlines. |
-| `filterTrackNames` | switch | `true` | Filter short lines containing the artist or album name. |
+| `filterTrackNames` | switch | `true` | Filter short artist/album credit lines; translated lyric lines are kept. |
 | `heartbeatSeconds` | number | `5` | Heartbeat interval in seconds. |
 
 ## IPC

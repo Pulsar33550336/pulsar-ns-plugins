@@ -219,6 +219,22 @@ const lines = [
   await settle();
   assert.equal(last().lyric, "Real line");
 
+  // 与专辑同名的正常歌词如果有翻译，不能被 filterTrackNames 误杀。
+  const albumTrack = {
+    ...creditTrack,
+    album: { name: "We dance beneath the galaxy" },
+  };
+  handlers.get("trackChange")({ track: albumTrack });
+  const albumLyricLines = [
+    { words: [{ word: "We dance beneath the galaxy" }], translatedLyric: "我们在银河下跳舞", startTime: 0, endTime: 1000, isBG: false, isDuet: false },
+    { words: [{ word: "Real next" }], translatedLyric: "", startTime: 1000, endTime: 2000, isBG: false, isDuet: false },
+  ];
+  handlers.get("lyricChange")({ lines: albumLyricLines });
+  handlers.get("lineChange")({ index: 0, position: 100 });
+  await settle();
+  assert.equal(last().lyric, "We dance beneath the galaxy");
+  assert.equal(last().currentTranslation, "我们在银河下跳舞");
+
   // 制作信息前面带了前缀（例如「W HOYO-MiX」）也要按歌手名过滤。
   const wrappedLines = [
     { words: [{ word: "W HOYO-MiX" }], translatedLyric: "", startTime: 0, endTime: 1000, isBG: false, isDuet: false },

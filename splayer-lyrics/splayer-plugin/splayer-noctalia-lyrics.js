@@ -193,7 +193,8 @@ const updateTrackMeta = () => {
       : "";
 };
 
-const isCreditText = (text) => {
+const isCreditText = (line) => {
+  const text = lineText(line);
   if (!text) return true;
   const matchers = ensureCreditMatchers();
   if (
@@ -204,8 +205,10 @@ const isCreditText = (text) => {
   ) {
     return true;
   }
-  // 制作署名可能出现在歌词段之后；短行包含歌手/专辑名时也按制作信息处理。
-  if (asBool("filterTrackNames", true) && text.length <= 80) {
+  // 有翻译的行是正常歌词，不按歌手/专辑名过滤；否则与专辑同名的歌词会被误杀。
+  const translated =
+    typeof line.translatedLyric === "string" && line.translatedLyric.trim() !== "";
+  if (!translated && asBool("filterTrackNames", true) && text.length <= 80) {
     const lower = text.toLowerCase();
     if (
       trackArtistNames.some(
@@ -230,7 +233,7 @@ const rebuildCreditFlags = () => {
   const flags = lines.map((line) => {
     const text = lineText(line);
     if (!text) return true;
-    return enabled ? isCreditText(text) : false;
+    return enabled ? isCreditText(line) : false;
   });
 
   // 制作署名有时拆成两行，第二行没有冒号（如 "prime sound studio form"）。
